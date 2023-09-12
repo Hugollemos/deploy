@@ -4,11 +4,11 @@ URL_PEGANDO_ID="http://89.116.214.202:9000/api/endpoints/2/docker/containers/jso
 URL_FOR_PAUSA="http://89.116.214.202:9000/api/endpoints/2/docker/containers"
 URL_FOR_DELETE="http://89.116.214.202:9000/api/endpoints/2/docker/containers"
 API_KEY=$API_KEY
-STACK_NAME=$STACK_NAME
+STACK_NAME=$ola
 FILE_PATH=$FILE_PATH
 imagem=hugollemos/demo:latest
 ENDPOINT=2
-
+CONTAINER_NAME=abc
  #Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
 
@@ -36,10 +36,9 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     sleep 5
     echo "deletando container"
     curl -X DELETE "$URL_FOR_DELETE/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
-    docker pull hugollemos/demo:latest && docker run hugollemos/demo:latest
-    sleep 5
+    echo "pull container"
+    docker pull hugollemos/demo:latest 
     echo "deletando stack"
-    # Faz a solicitação DELETE para atualizar a stack
     sleep 5
     curl -X DELETE "$DELETE_URL" \
     -H "X-API-Key: $API_KEY" \
