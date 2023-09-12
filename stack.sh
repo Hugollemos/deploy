@@ -36,6 +36,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     sleep 5
     echo "deletando container"
     curl -X DELETE "$URL_FOR_DELETE/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
+    docker pull hugollemos/demo:latest && docker run hugollemos/demo:latest
     sleep 5
     echo "deletando stack"
     # Faz a solicitação DELETE para atualizar a stack
@@ -49,8 +50,6 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     -F "Name=$STACK_NAME" --insecure
     echo "Stack deletada. ID: $id"
     sleep 5
-    docker pull hugollemos/demo:latest
-    docker rmi -f hugollemos/demo:latest
     echo "Aguarde 2 segundos"
     sleep 2
     echo "CRIANDO A STACK $name"
