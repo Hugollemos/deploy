@@ -1,0 +1,15 @@
+name: 'action to deploy stacks'
+description: 'Action to deploy stacks to portainer'
+author: Hugo Lemos da Silva
+branding:
+  icon: 'bar-chart-2'
+  color: 'yellow' 
+outputs:
+  saida:
+    description: "success in deploy"
+    value: ''
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/stack.sh
+      shell: bash
