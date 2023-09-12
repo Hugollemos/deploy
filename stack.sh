@@ -49,8 +49,10 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     -F "Name=$STACK_NAME" --insecure
     echo "Stack deletada. ID: $id"
     sleep 5
-    echo "realizando o pull"
-    docker pull hugollemos/demo:latest
+    docker rmi -f hugollemos/demo:latest
+    echo "Aguarde 2 segundos"
+    sleep 2
+    echo "CRIANDO A STACK $name"
     sleep 5
     echo "Aguardando 5 segundos..."
     sleep 5
