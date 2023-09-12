@@ -37,7 +37,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     echo "deletando container"
     curl -X DELETE "$URL_FOR_DELETE/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
     echo "pull container"
-    docker pull hugollemos/demo:latest 
+    docker-compose pull 
     echo "deletando stack"
     sleep 5
     curl -X DELETE "$DELETE_URL" \
