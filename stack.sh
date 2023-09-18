@@ -84,8 +84,34 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     # Imprimir o valor do Id
     echo "Nova Stack criada. Id: $id"
   else
-    echo "stack encontrada, mas container não encontrado??"
-    exit 1
+    echo "stack encontrada, mas container não encontrado"
+
+    echo "deletando imagem"
+    curl -s -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
+    sleep 5
+    
+    echo "================"
+    echo "DELETANDO STACK"
+    echo "================"
+    curl -X DELETE "$DELETE_URL" \
+    -H "X-API-Key: $API_KEY" \
+    -F "type=2" \
+    -F "method=file" \
+    -F "file=@$FILE_PATH" \
+    -F "endpointId=$ENDPOINT" \
+    -F "Name=$STACK_NAME" --insecure
+    echo "Stack deletada. ID: $id"
+
+    echo "============================"
+    echo "CRIANDO A STACK $name"
+    echo "============================"
+    response=$(curl -s -X POST "$URL" \
+    -H "X-API-Key: $API_KEY" \
+    -F "type=2" \
+    -F "method=file" \
+    -F "file=@$FILE_PATH" \
+    -F "endpointId=$ENDPOINT" \
+    -F "Name=$STACK_NAME" --insecure)
   fi
 
 else
