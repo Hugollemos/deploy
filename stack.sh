@@ -13,10 +13,8 @@ tags=$tags
 # Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
 
-
 # Obtenha o ID do contêiner com base no nome
 CONTAINER_ID=$(curl -X GET "$MANIPULA_CONTAINER/json" -H "X-Api-Key: $API_KEY" | jq -r '.[] | select(.Names[] | contains("'$CONTAINER_NAME'")) | .Id')
-
 
 # Obtenha o SHA da imagem com base na tag
 IMAGE_SHA=$(curl -s -X GET "$getsha" -H "X-API-Key: $API_KEY" | jq -r --arg tags "$tags" '.[] | select(.RepoTags[] | contains($tags)) | .Id')
@@ -115,16 +113,10 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   fi
 
 else
-  echo "=========================================="
+  echo "======================================"
   echo "NENHUMA STACK DA APLICAÇÃO ENCONTRADA."
+  echo "======================================"
 
-  echo "pausando container"
-    curl -X POST "$MANIPULA_CONTAINER/$CONTAINER_NAME/stop" -H "X-API-Key: $API_KEY"
-    sleep 5
-
-  echo "deletando container"
-  curl -X DELETE "$MANIPULA_CONTAINER/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
-  sleep 5
 
   # VALIDAR PROCESSO DE EXCLUSAO DA IMAGEM
   echo "deletando imagem"
@@ -132,7 +124,7 @@ else
     sleep 5
 
   echo "CRIANDO A NOVA STACK"
-  echo "=========================================="
+  echo "===================="
   response=$(curl -s -X POST "$URL" \
   -H "X-API-Key: $API_KEY" \
   -F "type=2" \
