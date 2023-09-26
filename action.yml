@@ -1,4 +1,4 @@
-name: 'action to deploy stacks'
+name: 'Deploy stacks'
 description: 'Action to deploy stacks to portainer'
 author: Hugo Lemos da Silva
 branding:
